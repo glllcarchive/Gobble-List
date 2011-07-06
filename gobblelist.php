@@ -356,5 +356,4 @@ function BuildList($list = array())
 
 	return $theList;
 }
-
 ?>

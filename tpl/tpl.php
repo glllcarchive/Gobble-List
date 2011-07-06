@@ -41,5 +41,4 @@ $widgetTemplate['list_pagination_row'] = '<li><!--CONTENT--></li>';
 $widgetTemplate['list_pagination_nav_row_active'] = '<li><span><a href="<!--URL-->"><!--TEXT--></a></span></li>';
 
 $widgetTemplate['list_pagination_nav_row_passive'] = '<li><span><!--TEXT--></span></li>';
-
 ?>
