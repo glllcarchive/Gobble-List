@@ -206,7 +206,7 @@ if(! class_exists("GobbleList"))
 
             $nextBtn = str_replace(array('<!--URL-->','<!--TEXT-->'), array($nextUrl,$nextTxt), $nextBtn);
 
-            $prevBtn = str_replace(array('<!--URL-->','<!--TEXT-->'), array($nextUrl,$prevTxt), $prevBtn);
+            $prevBtn = str_replace(array('<!--URL-->','<!--TEXT-->'), array($prevUrl,$prevTxt), $prevBtn);
 
             if($items['totalPages'] < $pageRange)
             {
