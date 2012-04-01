@@ -13,6 +13,11 @@ require_once('tpl/tpl.php');
 
 if(! class_exists("GobbleList"))
 {
+   /**
+   * GobbleList
+   *
+   * @todo table aliases are flawed
+   */
    class GobbleList
    {
       /**
@@ -61,7 +66,9 @@ if(! class_exists("GobbleList"))
          $this->items = array();
          $this->items['sql']            = '';
          $this->items['view']           = '';
+         $this->items['query']          = '';
          $this->items['name']           = '';
+         $this->items['mode']           = 'sql'; //sql, view, table
          $this->items['id']             = '';
          $this->items['title']          = '';
          $this->items['dataLength']     = 25;
@@ -128,11 +135,25 @@ if(! class_exists("GobbleList"))
             $this->items['colSortOrder'] = 'ASC';
          }
 
-         //Assumed view
-         //
+         /**
+         * Setup query
+         *
+         * Every needs to end up in a query format
+         */
          if(! empty($this->items['table']))
          {
-            $this->items['view'] = $this->items['table'];
+            $this->items['mode']  = 'table';
+            $this->items['query'] = "SELECT * FROM {$this->items['table']}";
+         }
+         elseif(! empty($this->items['sql']))
+         {
+            $this->items['mode']  = 'sql';
+            $this->items['query'] = $this->items['sql'];
+         }
+         elseif(! empty($this->items['view']))
+         {
+            $this->items['mode']  = 'view';
+            $this->items['query'] = "SELECT * FROM {$this->items['view']}";
          }
 
          //Build out provided assumed fieldlist
@@ -143,18 +164,29 @@ if(! class_exists("GobbleList"))
          }
          else
          {
-            //No fields were defined so grab them all automatically
-            //
-            $getColumns = "SHOW COLUMNS FROM {$this->items['view']}";
-
-            $columns = $this->database->get_results($getColumns, ARRAY_A);
-
-            foreach($columns as $key => $row)
+            switch($this->items['mode'])
             {
-               $this->items['fields'][$row['Field']] = ucwords(str_replace('_', ' ', $row['Field']));
-            }
+               case 'table':
+               case 'view':
 
-            $fieldList = implode(',' , array_keys($this->items['fields']));
+                  //No fields were defined so grab them all automatically
+                  //
+                  $getColumns = "SHOW COLUMNS FROM {$this->items[$this->items['mode']]}";
+
+                  $columns = $this->database->get_results($getColumns, ARRAY_A);
+
+                  foreach($columns as $key => $row)
+                  {
+                     $this->items['fields'][$row['Field']] = ucwords(str_replace('_', ' ', $row['Field']));
+                  }
+
+                  $fieldList = implode(',' , array_keys($this->items['fields']));
+
+               break;
+
+               default:
+                  $fieldList = '*';
+            }
          }
 
          //Extra columns to select but not to display
@@ -181,8 +213,8 @@ if(! class_exists("GobbleList"))
 
          //Setup Queries
          //
-         $getCnt  = "SELECT count(*) as total FROM {$this->items['view']} $filter";
-         $getRows = "SELECT $fieldList FROM {$this->items['view']} $filter {$this->items['orderBy']} LIMIT {$this->items['rowStart']}, {$this->items['rowLimit']}";
+         $getCnt  = "SELECT count(*) as total FROM ({$this->items['query']}) b $filter";
+         $getRows = "SELECT $fieldList FROM ({$this->items['query']} $filter) b {$this->items['orderBy']} LIMIT {$this->items['rowStart']}, {$this->items['rowLimit']}";
 
          $getCnt  = $this->database->prepare($getCnt, $bindVars);
          $getRows = $this->database->prepare($getRows, $bindVars);
