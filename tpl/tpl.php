@@ -3,17 +3,14 @@
 $widgetTemplate = array();
 
 $widgetTemplate['list_wrapper'] = '
-<div id="paginationBlock">
-   <div class="tablenav">
-	<div class="tablenav-pages">
-		<!--PAGINATION-->
-		</div>
-	</div>
-  </div>
 <div class="<!--CLASS-->" id="<!--ID-->">
-   <table class="widefat">
+    <div id="paginationBlock">
+        <!--PAGINATION-->
+    </div>
+
+   <table class="<!--TABLE_CLASS-->">
    	<thead>
-      <tr>
+      <tr class="gl-list-headers">
          <!--HEADERS-->
       </tr>
     </thead>
@@ -22,23 +19,38 @@ $widgetTemplate['list_wrapper'] = '
     </tdbody>
    </table>
    <div class=""><!--BOTTOM_PAGINATION--></div>
-   <!--OPTION_LINK-->
+   <input type="hidden" name="persistent_args" id="persistent_args" value="<!--PERSISTENT_ARGS-->">
 </div>
 ';
 
-$widgetTemplate['header_row'] = '<th class="row-title"><!--CONTENT--></th>';
+$widgetTemplate['header_row'] = '<th class="row-title <!--CLASS_DATA-->"><!--CONTENT--></th>';
+
+$widgetTemplate['header_row_sort'] = '<th class="row-title row-title-sort <!--CLASS_DATA-->" onclick="<!--ONCLICK--> return false;"><!--CONTENT--></th>';
 
 $widgetTemplate['list_row'] = '<tr class="<!--CLASS-->"><!--CONTENT--></tr>';
 
-$widgetTemplate['list_data'] = '<td><!--CONTENT--></td>';
+$widgetTemplate['list_data'] = '<td class="<!--CLASS_DATA-->"><!--CONTENT--></td>';
 
 $widgetTemplate['list_data_row'] = '<tr><td><!--CONTENT--></td></tr>';
 
-$widgetTemplate['list_pagination_wrapper'] = '<ul id="pagination"><!--CONTENT--></ul>';
+$widgetTemplate['list_pagination_wrapper'] = '<ul class="pagination"><!--CONTENT--></ul>';
 
 $widgetTemplate['list_pagination_row'] = '<li><!--CONTENT--></li>';
 
-$widgetTemplate['list_pagination_nav_row_active'] = '<li><span><a href="<!--URL-->"><!--TEXT--></a></span></li>';
+$widgetTemplate['list_pagination_nav_row_active_ajax'] = '<li><span><a onclick="<!--ONCLICK--> return false;"><!--TEXT--></a></span></li>';
+$widgetTemplate['list_pagination_nav_row_active_link'] = '<li><span><a href="<!--URL-->"><!--TEXT--></a></span></li>';
 
 $widgetTemplate['list_pagination_nav_row_passive'] = '<li><span><!--TEXT--></span></li>';
+
+$widgetTemplate['list_pagination_nav_first_jump_ajax'] = '<li><span><a href="" onclick="<!--ONCLICK--> return false;">1</a></span></li>';
+$widgetTemplate['list_pagination_nav_first_jump_link'] = '<li><span><a href="<!--URL-->">1</a></span></li>';
+
+$widgetTemplate['list_pagination_nav_single_jump_ajax'] = '<li><span><a onclick="<!--ONCLICK--> return false;"><!--PAGE--></a></span></li>';
+$widgetTemplate['list_pagination_nav_single_jump_link'] = '<li><span><a href="<!--URL-->"><!--PAGE--></a></span></li>';
+
+$widgetTemplate['list_pagination_nav_max_jump_ajax'] = '<li><span><a onclick="<!--ONCLICK--> return false;"><!--PAGE--></a></span></li>';
+$widgetTemplate['list_pagination_nav_max_jump_link'] = '<li><span><a href="<!--URL-->"><!--PAGE--></a></span></li>';
+
+$widgetTemplate['list_pagination_nav_max_jump_ajax'] = '<li><span><a onclick="<!--ONCLICK--> return false;"><!--TOTAL_PAGES--></a></span></li>';
+$widgetTemplate['list_pagination_nav_max_jump_link'] = '<li><span><a href="<!--URL-->"><!--TOTAL_PAGES--></a></span></li>';
 ?>
